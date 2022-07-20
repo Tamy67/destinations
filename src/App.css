@@ -1,0 +1,28 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+ 
+main {
+    max-width: 1200px;
+    margin: 50px auto;
+  }
+
+
+   .btnModal {
+    border: none;
+    background-color: rgb(73, 181, 127);
+    border-radius: 4px;
+    color: white;
+    font-size: 12px;
+    padding: 10px;
+    font-weight: 600;
+    min-width: 90px;
+    cursor: pointer;
+  } 
+
+  .btnFloat {
+    display: flex;
+    justify-content: end;
+  }
