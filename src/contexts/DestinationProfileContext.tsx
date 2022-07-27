@@ -1,55 +1,67 @@
-import React, { createContext, useState } from 'react';
-import { DestinationType, ImageType } from '../common_types/Destination';
+import React, { createContext, useContext, useState } from 'react';
+import { DestinationType } from '../common_types/Destination';
+import { data } from '../App';
 
 type DestinationProfileContextType = {
-  id?: string;
-  destinationName: string;
-  image: ImageType;
-  address: string;
-  population: number;
-  hotels: number;
-  revenue: number;
-  surface: number;
-  active: boolean;
-  setDestinationProfileContext: (info: DestinationType) => void;
+  destinations: DestinationType[];
+  toUpload: (destination: DestinationType) => void;
+  toggleDestination?: (id: string) => void;
 };
-export const DestinationProfileContext = createContext<DestinationProfileContextType>(
-  {} as DestinationProfileContextType,
-);
 
-export type DestinationProfileContextProviderType = {
+type ProviderType = {
   children: JSX.Element | JSX.Element[];
-  //   value: DestinationProfileContextType;
 };
 
-const DestinationProfileContextProvider = ({ children }: DestinationProfileContextProviderType) => {
-  const destinationProfileState: DestinationProfileContextType = {
-    id: '',
-    destinationName: '',
-    image: { src: '', alt: '' },
-    address: '',
-    population: 0,
-    hotels: 0,
-    revenue: 0,
-    surface: 0,
-    active: false,
-    setDestinationProfileContext: (info) =>
-      setDestinationProfile((prevState) => ({
-        ...prevState,
-        id: info.id,
-        destinationName: info.destinationName,
-        address: info.address,
-        image: { src: info.image.src, alt: info.image.alt },
-        population: info.population,
-        hotels: info.hotels,
-        revenue: info.revenue,
-        surface: info.surface,
-        active: info.active,
-      })),
-  };
-  const [destinationProfile, setDestinationProfile] = useState<DestinationProfileContextType>(destinationProfileState);
+// Create Contexte
+const DestinationProfileContext = createContext<DestinationProfileContextType>({} as DestinationProfileContextType);
 
-  return <DestinationProfileContext.Provider value={destinationProfile}>{children}</DestinationProfileContext.Provider>;
+// Custom Hook useDestination
+export const useDestination = () => {
+  const { destinations, toUpload, toggleDestination } = useContext(DestinationProfileContext);
+  return {
+    destinations,
+    toUpload,
+    toggleDestination,
+  };
+};
+
+// Destination Provider
+const DestinationProfileContextProvider = ({ children }: ProviderType) => {
+  const [destinations, setDestinations] = useState<DestinationType[]>(data);
+
+  // function to add a new destination
+  const toUpload = (destination: DestinationType) => {
+    if (destination) {
+      const newItem = {
+        id: Math.random().toString(36).substring(2, 9),
+        destinationName: destination.destinationName,
+        image: destination.image,
+        address: destination.address,
+        hotels: destination.hotels,
+        population: destination.population,
+        revenue: destination.revenue,
+        surface: destination.surface,
+        active: destination.active,
+      };
+      console.log('newItem', newItem);
+      setDestinations([newItem, ...destinations]);
+    }
+  };
+
+  // function to activate button toggle active and inactive
+  const toggleDestination = (id: string) => {
+    destinations.filter((destination) => {
+      if (destination.id === id) {
+        destination.active = true;
+        setDestinations([...destinations]);
+      }
+    });
+  };
+  return (
+    <DestinationProfileContext.Provider value={{ destinations, toUpload, toggleDestination }}>
+      {children}
+    </DestinationProfileContext.Provider>
+  );
 };
 
 export default DestinationProfileContextProvider;

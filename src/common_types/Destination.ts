@@ -1,39 +1,37 @@
 export type DestinationType = {
-    id: string;
-    destinationName: string;
-    image: ImageType;
-    address: string;
-    population: number;
-    hotels: number;
-    revenue: number;
-    surface: number;
-    active: boolean
-}
-
-export type DestinationListType = {
-    data: DestinationType[];
+  id: string;
+  destinationName: string;
+  image: string;
+  address: string;
+  population: number;
+  hotels: number;
+  revenue: number;
+  surface: number;
+  active: boolean;
 };
 
-export type BaseModalWrapperType = {
-    isModalVisible: boolean;
-    onBackdropClick: () => void;
+export type ToUploadType = {
+  id?: string;
+  destinationName?: string;
+  image?: string;
+  address?: string;
+  population?: number;
+  hotels?: number;
+  revenue?: number;
+  surface?: number;
+  active?: boolean;
 };
 
-export type ImageType = {
-    src: string,
-    alt?: string
-}
+export type DestinationProviderProps = {
+  children: JSX.Element | JSX.Element[];
+};
 
+export type HandleChangeType = {
+  target: { value: string; name?: string };
+};
 
-  
-  export interface DestinationProviderProps {
-    children: JSX.Element | JSX.Element[];
-  };
-
-
-  export type HandleChangeType = {
-    target: { value: string, name?: string };
-  };
-
-
-
+export type ValidationsType = {
+  isEmpty: boolean;
+  minLength: number;
+  maxLength: number;
+};

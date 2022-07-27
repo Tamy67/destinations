@@ -3,13 +3,12 @@ import './style.css';
 
 type ToggleButtonType = {
   onToggle: () => void;
-  isToggled: boolean;
-  clNm?: string;
+  isToggled?: boolean;
 };
-const ToggleButton = ({ isToggled, onToggle, clNm }: ToggleButtonType) => {
+const ToggleButton = ({ isToggled, onToggle }: ToggleButtonType) => {
   return (
-    <label className={(clNm = 'switch')}>
-      <input type="checkbox" name="toggle" id="toggle" checked={isToggled} onChange={onToggle} />
+    <label className="switch">
+      <input type="checkbox" name="active" id="active" defaultChecked={isToggled} onChange={onToggle} />
       <span className="slider" />
     </label>
   );

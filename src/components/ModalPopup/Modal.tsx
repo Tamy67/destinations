@@ -22,6 +22,7 @@ const Modal = ({ onBackdropClick, children }: ModalPropsType) => {
     <div className={backdropClasses} onClick={handleClose}>
       {children}
     </div>,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     document.getElementById('modal-root')!,
   );
 };

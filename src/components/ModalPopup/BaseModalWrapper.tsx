@@ -1,8 +1,12 @@
 import React from 'react';
-import { BaseModalWrapperType } from '../../common_types/Destination';
-import Checkout from '../DestinationForm/Checkout';
-import DestinationForm from '../DestinationForm/DestinationForm';
+import Form from '../DestinationForm/Form';
+
 import Modal from './Modal';
+
+export type BaseModalWrapperType = {
+  isModalVisible: boolean;
+  onBackdropClick: () => void;
+};
 
 const BaseModalWrapper = ({ isModalVisible, onBackdropClick }: BaseModalWrapperType) => {
   if (!isModalVisible) {
@@ -16,8 +20,7 @@ const BaseModalWrapper = ({ isModalVisible, onBackdropClick }: BaseModalWrapperT
           <h3> Ajouter une nouvelle destination</h3>
         </div>
         <div className="modal-body">
-          {/* <DestinationForm /> */}
-          <Checkout />
+          <Form />
         </div>
       </div>
     </Modal>

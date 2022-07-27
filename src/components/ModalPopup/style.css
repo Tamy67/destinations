@@ -66,3 +66,15 @@
     opacity: 0;
     transform: translateY(-500px);
 }
+
+.btnSubmit, .btnCancel {
+    border: none;
+    background-color: transparent;
+    border-radius: 5px;
+    color: rgb(73, 181, 127);
+    font-size: 12px;
+    font-weight: bolder;
+    padding: 10px;
+    min-width: 86px;
+    cursor: pointer;
+  } 

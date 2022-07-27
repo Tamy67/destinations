@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { DestinationType } from '../../common_types/Destination';
-import { DestinationProvider } from '../../contexts/DestinationContext/DestinationContextProvider';
-import { useDestinations } from '../../hooks/useDestinations';
+import { useDestination } from '../../contexts/DestinationProfileContext';
 import ToggleButton from '../ToggleButton/ToggleButton';
 import './style.css';
 
-
 export type CardDestinationType = {
   destination: DestinationType;
+  toggleDestination?: (id: string) => void;
 };
 
 const DestinationItem = ({ destination }: CardDestinationType) => {
   const { id, destinationName, address, population, hotels, revenue, surface, image, active } = destination;
+  // const { toggleDestination } = useDestination();
   const [isToggled, setIsToggled] = useState<boolean>(active);
 
   const numberWithSpace = (num: number) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return num?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   };
+
+  const currency = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0 })
+    .format(revenue)
+    .split('.')
+    .join(' ');
 
   const numFormatter = (num: number) => {
     if (num > 999 && num < 1000000) {
@@ -43,39 +48,39 @@ const DestinationItem = ({ destination }: CardDestinationType) => {
 
   return (
     <>
-      <div key={id} className="card">
-        <div className="card__image-container">
-          <img src={image.src} alt={image.alt} />
+      <div key={id} className="destination">
+        <div className="destination__image-container">
+          <img src={image} alt="image" />
         </div>
-        <div className="card__content">
-          <h2 className="card__title">{destinationName}</h2>
+        <div className="destination__content">
+          <h2 className="destination__title">{destinationName}</h2>
           <span className="toggle">
             <ToggleButton onToggle={handleClick} isToggled={isToggled} />
           </span>
-          <div className="card__info">
+          <div className="destination__info">
             {' '}
-            <p className="card__text">{address}</p>
+            <p className="destination__text">{address}</p>
           </div>
         </div>
 
-        <div className="card__footer">
+        <div className="destination__footer">
           <div className="block">
             {' '}
-            <span>{numFormatter(population)}</span>
+            <span>{numFormatter(population !== undefined ? population : 0)}</span>
             <p>Habitants</p>
           </div>
           <div className="block">
-            <span>{numberWithSpace(hotels)}</span>
+            <span>{numberWithSpace(hotels !== undefined ? hotels : 0)}</span>
             <p>Hôtels</p>
           </div>
           <div className="block">
             {' '}
-            <span>{numberWithSpace(revenue)} €</span>
+            {revenue && <span>{currency}</span>}
             <p>Revenu Moy</p>
           </div>
           <div className="block">
             {' '}
-            <span>{surface}</span>
+            <span>{surface !== undefined ? surface : 0}</span>
             <p>km²</p>
           </div>
         </div>

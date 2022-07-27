@@ -1,104 +1,94 @@
-import React, { useEffect, useReducer, useState } from 'react';
-import {
-  DestinationContext,
-  DestinationProvider,
-  initialState,
-} from './contexts/DestinationContext/DestinationContextProvider';
-import './App.css';
+import React from 'react';
+import { DestinationType } from './common_types/Destination';
+import paris from '../src/images/paris.jpg';
+import copenHagen from '../src/images/copenhagen.jpeg';
+import newYork from '../src/images/newYork.jpeg';
+import tehran from '../src/images/tehran.jpeg';
+import london from '../src/images/london.jpeg';
+import tokyo from '../src/images/tokyo.jpeg';
+import DestinationProfileContextProvider from './contexts/DestinationProfileContext';
 import ListDestination from './components/Destination/ListDestination';
-import { destinationReducer } from './contexts/DestinationContext/DestinationReducer';
-import { DestinationType, ImageType } from './common_types/Destination';
 
-// const store = localStorage.getItem('key');
+import './App.css';
 
-export const App = () => {
-  const [destinationState, dispatch] = useReducer(destinationReducer, initialState);
+export const data: DestinationType[] = [
+  {
+    id: '1',
+    destinationName: 'Copenhagen',
+    address: `Rådhuspladsen 1, 1550 København, Denmark`,
+    image: copenHagen,
+    population: 3400000,
+    hotels: 5000,
+    revenue: 70000,
+    surface: 88.25,
+    active: false,
+  },
+  {
+    id: '2',
+    destinationName: 'Tehran',
+    address: `Tehran, Azadi Square, Iran`,
+    image: tehran,
+    population: 8600000,
+    hotels: 400,
+    revenue: 30000,
+    surface: 730,
+    active: false,
+  },
+  {
+    id: '3',
+    destinationName: 'Paris',
+    address: `Pl. de l'Hôtel de Ville, 75004 Paris`,
+    image: paris,
+    population: 2100000,
+    hotels: 7500,
+    revenue: 50000,
+    surface: 105.4,
+    active: true,
+  },
 
-  const [loaded, setLoaded] = useState(true);
+  {
+    id: '4',
+    destinationName: 'London',
+    address: `London SW1A 0AA, United Kingdom`,
+    image: london,
+    population: 8600000,
+    hotels: 10000,
+    revenue: 90000,
+    surface: 157.2,
+    active: true,
+  },
+  {
+    id: '5',
+    destinationName: 'Tokyo',
+    address: `4 Chome-2-8 Shibakoen, Minato City, Tokyo 105-0011, Japan `,
+    image: tokyo,
+    population: 13900000,
+    hotels: 7000,
+    revenue: 70000,
+    surface: 627.6,
+    active: true,
+  },
+  {
+    id: '6',
+    destinationName: 'New York',
+    address: `New York, NY 10004, United States`,
+    image: newYork,
+    population: 8400000,
+    hotels: 12000,
+    revenue: 100000,
+    surface: 783.8,
+    active: false,
+  },
+];
 
-  const [destinations, setDestinations] = useState<DestinationType[]>([]);
-
-  const [destinationNm, setDestinationNm] = useState<string>('');
-  const [address, setAddress] = useState<string>('');
-  const [image, setImage] = useState<ImageType>({ src: '', alt: '' });
-  const [population, setPopulation] = useState<number>(0);
-  const [hotels, setHotels] = useState<number>(0);
-  const [revenue, setRevenue] = useState<number>(0);
-  const [surface, setSurface] = useState<number>(0);
-  const [active, setActive] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   if (!loaded) {
-  //     setTimeout(() => {
-  //       setLoaded(true);
-  //     }, 300);
-  //   } else {
-  //     setLoaded(false);
-  //   }
-  // }, [loaded]);
-
-  // if (loaded) {
-  //   return <Spinner/>
-  // }
-
-  useEffect(() => {
-    let raw = JSON.parse(localStorage.getItem('destinations') as string) || [];
-    if (typeof raw === 'string') {
-      return setDestinations(JSON.parse(raw));
-    }
-  }, []);
-
-  useEffect(() => {
-    let raw_key = localStorage.getItem('destinations');
-
-    if (typeof raw_key === 'string') {
-      JSON.stringify(destinations); //stringify object and store ; Retrieve the object from storage
-    }
-  }, [destinations]);
-
-  const addDestination = (event: any) => {
-    if (event.key === 'ENTER') {
-      setDestinations([
-        ...destinations,
-        {
-          id: new Date().getTime().toString(36) + '_',
-          destinationName: destinationNm,
-          address: address,
-          image: { src: image.src, alt: image.alt },
-          population: population,
-          hotels: hotels,
-          revenue: revenue,
-          surface: surface,
-          active: active,
-        },
-      ]),
-        setDestinationNm('');
-      setAddress('');
-      setImage({ src: '', alt: '' });
-      setPopulation(0);
-      setHotels(0);
-      setRevenue(0);
-      setSurface(0);
-      setActive(false);
-    }
-  };
-
-  const toggleDestination = (id: string) => {
-    setDestinations(
-      destinations.map((dest) => {
-        if (dest.id === id) {
-          dest.active = !dest.active;
-        }
-        return dest;
-      }),
-    );
-  };
-
+const App = () => {
   return (
     <main>
-      <DestinationProvider>
+      <DestinationProfileContextProvider>
         <ListDestination />
-      </DestinationProvider>
+      </DestinationProfileContextProvider>
     </main>
   );
 };
+
+export default App;
